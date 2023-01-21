@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "460579079421",
+    "project_id": "bimbonet-9339d",
+    "storage_bucket": "bimbonet-9339d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460579079421:android:2ab421be0378d891edea94",
+        "android_client_info": {
+          "package_name": "com.elcentaurx.bimbonet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "460579079421-v48jk6uir45e9ciio2o11pri8434q8vj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqP8NgE-mbJXMdrShgqn6jELS3cWQcuI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "460579079421-v48jk6uir45e9ciio2o11pri8434q8vj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
