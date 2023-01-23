@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -31,7 +34,15 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_profileFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            android:id="@+id/action_profileFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_beerListFragment"
+            app:destination="@id/beerListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/beerListFragment"
+        android:name="com.elcentaurx.bimbonet.views.BeerListFragment"
+        android:label="fragment_beer_list"
+        tools:layout="@layout/fragment_beer_list" />
 </navigation>

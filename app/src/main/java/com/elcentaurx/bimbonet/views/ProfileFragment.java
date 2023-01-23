@@ -1,29 +1,36 @@
 package com.elcentaurx.bimbonet.views;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.elcentaurx.bimbonet.R;
+import com.elcentaurx.bimbonet.repository.AuthenticationRepository;
 import com.elcentaurx.bimbonet.viewmodel.AuthViewModel;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class ProfileFragment extends Fragment {
 
     private AuthViewModel viewModel;
     private NavController navController;
-    private Button signOutBtn;
+    private Button signOutBtn, button;
+    AuthenticationRepository repository;
 
 
     @Override
@@ -35,10 +42,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
-                    navController.navigate(R.id.action_profileFragment_to_signInFragment);
+                    navController.navigate(R.id.action_profileFragment_to_signUpFragment);
                 }
             }
         });
+        repository = new AuthenticationRepository(getActivity().getApplication());
     }
 
     @Override
@@ -54,6 +62,7 @@ public class ProfileFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
         signOutBtn = view.findViewById(R.id.btnSignOut);
+        button = view.findViewById(R.id.button);
 
         signOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,5 +70,17 @@ public class ProfileFragment extends Fragment {
                 viewModel.signOut();
             }
         });
+        button.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_profileFragment_to_beerListFragment);
+            }
+        });
+
+
+
+
     }
+
 }

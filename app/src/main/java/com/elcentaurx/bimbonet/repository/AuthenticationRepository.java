@@ -1,6 +1,9 @@
 package com.elcentaurx.bimbonet.repository;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ public class AuthenticationRepository {
     private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
     private MutableLiveData<Boolean> userLoggedMutableLiveData;
     private FirebaseAuth auth;
+    SharedPreferences preferences;
 
     public MutableLiveData<FirebaseUser> getFirebaseUserMutableLiveData() {
         return  firebaseUserMutableLiveData;
@@ -43,6 +47,13 @@ public class AuthenticationRepository {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     firebaseUserMutableLiveData.postValue(auth.getCurrentUser());
+                    preferences = application
+                            .getSharedPreferences("email", Context.MODE_PRIVATE);
+                    String email = auth.getCurrentUser().getEmail();
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("email", email);
+                    editor.commit();
+
                 }
                 else{
                     Toast.makeText(application,task.getException().getMessage(),Toast.LENGTH_LONG).show();
@@ -57,6 +68,7 @@ public class AuthenticationRepository {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     firebaseUserMutableLiveData.postValue(auth.getCurrentUser());
+                    setDefaults("email",auth.getCurrentUser().getEmail(), application.getApplicationContext());
                 }else {
                     Toast.makeText(application, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                 }
@@ -67,6 +79,19 @@ public class AuthenticationRepository {
     public  void signOut(){
         auth.signOut();
         userLoggedMutableLiveData.postValue(true);
+
     }
+
+    public void setDefaults(String key, String value, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+    public  String getDefaults(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
+    }
+
 
 }
