@@ -9,15 +9,22 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.elcentaurx.bimbonet.R;
 import com.elcentaurx.bimbonet.adapters.BeerAdapter;
-import com.elcentaurx.bimbonet.model.Beer;
-import com.elcentaurx.bimbonet.repository.response.BeerResponse;
+import com.elcentaurx.bimbonet.data.database.AppDataBase;
+import com.elcentaurx.bimbonet.data.database.dao.ItemDao;
+import com.elcentaurx.bimbonet.data.database.entity.Item;
+import com.elcentaurx.bimbonet.data.database.repository.ItemRepository;
+import com.elcentaurx.bimbonet.data.database.repository.ItemRepositoryImpl;
+import com.elcentaurx.bimbonet.data.preferences.Preferences;
+import com.elcentaurx.bimbonet.model.BeerResponse;
 import com.elcentaurx.bimbonet.viewmodel.BeerViewModel;
 
 import java.util.ArrayList;
@@ -30,24 +37,29 @@ public class BeerListFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private Button showDB;
+    Preferences preferences;
 
     private LinearLayoutManager layoutManager;
     private ArrayList<BeerResponse> beerArrayList = new ArrayList<>();
     BeerViewModel beerViewModel;
     private BeerAdapter adapter;
-
-
-
+    AppDataBase dataBase;
+    ItemDao itemDao;
+    ItemRepository repo;
+    List<Item> items;
+    String isDBInitialize;
+    BeerResponse beerResponse;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        init();
-
+        dataBase = AppDataBase.getInstance(this.getContext());
+        itemDao = dataBase.itemDao();
+        repo = new ItemRepositoryImpl(itemDao);
+        preferences = new Preferences();
 
     }
-
-
 
 
     @Override
@@ -58,12 +70,10 @@ public class BeerListFragment extends Fragment {
     }
 
 
-
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        showDB = view.findViewById(R.id.showDb);
         progressBar = view.findViewById(R.id.progress_bar);
         recyclerView = view.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getContext());
@@ -72,22 +82,72 @@ public class BeerListFragment extends Fragment {
         adapter = new BeerAdapter(getContext(), beerArrayList);
         recyclerView.setAdapter(adapter);
         beerViewModel = ViewModelProviders.of(this).get(BeerViewModel.class);
-        getBeers();
-
+        showDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDBConsole();
+            }
+        });
+        isDBInitialize = preferences.getDefaults("isDbinitialized",getContext());
+        if(isDBInitialize == "N"){
+            getBeers();
+        }
+        else {
+            setDbtoAdapter();
+        }
     }
 
     private void getBeers() {
+
         beerViewModel.getBeerResponseLiveData().observe(getViewLifecycleOwner(), bearResponse ->{
             if (!bearResponse.isEmpty()){
-                progressBar.setVisibility(View.GONE);
+
                 List<BeerResponse> beerList = bearResponse;
                 beerArrayList.addAll(beerList);
                 adapter.notifyDataSetChanged();
+
+                try {
+                    setOnDatabase(beerList);
+                    progressBar.setVisibility(View.GONE);
+                    preferences.setDefaults("isDbinitialized", "Y", getContext());
+
+                }catch (Throwable throwable){
+                    Log.e("Error ->" , "Something wrong", throwable);
+                    preferences.setDefaults("isDbinitialized", "N", getContext());
+                }
             }
         });
-
-
-
+    }
+    public void setOnDatabase(List<BeerResponse> beerResponses) {
+        for (BeerResponse beerResponse: beerResponses){
+            Item item = new Item();
+            item.setId(beerResponse.getId());
+            item.setName(beerResponse.getName());
+            item.setDescription(beerResponse.getDescription());
+            item.setImageUrl(beerResponse.getImage_url());
+            repo.insertItem(item);
+        }
     }
 
+    public void showDBConsole(){
+        items  =  itemDao.getAll();
+        for (Item item: items) {
+            Log.d("ItemRoomDB", "item " + item.getDescription());
+        }
+    }
+
+    public void setDbtoAdapter(){
+        items  =  itemDao.getAll();
+        for (Item item: items) {
+            beerResponse = new BeerResponse();
+            beerResponse.setImage_url(item.getImageUrl());
+            beerResponse.setDescription(item.getDescription());
+            beerResponse.setId(item.getId());
+            beerResponse.setName(item.getName());
+            beerArrayList.add(beerResponse);
+        }
+        adapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+
+    }
 }

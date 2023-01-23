@@ -3,12 +3,11 @@ package com.elcentaurx.bimbonet.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.elcentaurx.bimbonet.repository.response.BeerResponse;
-import com.elcentaurx.bimbonet.retrofit.BeerApi;
-import com.elcentaurx.bimbonet.retrofit.RetrofitRequest;
+import com.elcentaurx.bimbonet.model.BeerResponse;
+import com.elcentaurx.bimbonet.data.remote.BeerApi;
+import com.elcentaurx.bimbonet.data.remote.RetrofitRequest;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,28 +40,6 @@ public class BeerRepository {
                 });
         return data;
     }
-
-
-
-
-//    public ArrayList<Beer> getBeers(Integer page) {
-//        beerApi = RetrofitRequest.getRetrofitInstance().create(BeerApi.class);
-//       ArrayList <Beer> data = new ArrayList<>();
-//        beerApi.getBeers(page)
-//                .enqueue(new Callback<List<BeerResponse>>() {
-//                    @Override
-//                    public void onResponse(Call<List<BeerResponse>> call, Response<List<BeerResponse>> response) {
-//                        response.body();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<BeerResponse>> call, Throwable t) {
-//                        Log.e("hey", t.toString());
-//                    }
-//                });
-//        return data;
-//    }
-
 
 }
 

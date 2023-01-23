@@ -1,4 +1,4 @@
-package com.elcentaurx.bimbonet.repository.response;
+package com.elcentaurx.bimbonet.model;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -16,6 +16,13 @@ public class BeerResponse {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+
+    public BeerResponse() {
+
+    }
 
     public String getImage_url() {
         return image_url;
@@ -23,6 +30,18 @@ public class BeerResponse {
 
     public void setImage_url(String image_url) {
         this.image_url = image_url;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
@@ -34,7 +53,15 @@ public class BeerResponse {
                 '}';
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public String getName() {
         return this.name;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 }

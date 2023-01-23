@@ -3,12 +3,14 @@ package com.elcentaurx.bimbonet.repository;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.elcentaurx.bimbonet.data.preferences.Preferences;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,6 +23,7 @@ public class AuthenticationRepository {
     private MutableLiveData<Boolean> userLoggedMutableLiveData;
     private FirebaseAuth auth;
     SharedPreferences preferences;
+    Preferences myPreference;
 
     public MutableLiveData<FirebaseUser> getFirebaseUserMutableLiveData() {
         return  firebaseUserMutableLiveData;
@@ -67,8 +70,9 @@ public class AuthenticationRepository {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    myPreference = new Preferences();
                     firebaseUserMutableLiveData.postValue(auth.getCurrentUser());
-                    setDefaults("email",auth.getCurrentUser().getEmail(), application.getApplicationContext());
+                    myPreference.setDefaults("email",auth.getCurrentUser().getEmail(), application.getApplicationContext());
                 }else {
                     Toast.makeText(application, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                 }
@@ -82,16 +86,7 @@ public class AuthenticationRepository {
 
     }
 
-    public void setDefaults(String key, String value, Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(key, value);
-        editor.commit();
-    }
-    public  String getDefaults(String key, Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(key, null);
-    }
+
 
 
 }

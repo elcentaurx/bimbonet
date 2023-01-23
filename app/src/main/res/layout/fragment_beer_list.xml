@@ -24,6 +24,14 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <Button
+        android:id="@+id/showDb"
+        android:text="Show database"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </Button>
+
 
 
 </RelativeLayout>

@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.elcentaurx.bimbonet.R;
+import com.elcentaurx.bimbonet.data.preferences.Preferences;
 import com.elcentaurx.bimbonet.repository.AuthenticationRepository;
 import com.elcentaurx.bimbonet.viewmodel.AuthViewModel;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +33,7 @@ public class SignInFragment extends Fragment {
     private AuthViewModel viewModel;
     private NavController navController;
     AuthenticationRepository authenticationRepository;
-    SharedPreferences sharedPreferences;
+    Preferences myPreferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class SignInFragment extends Fragment {
                 }
             }
         });
+        myPreferences = new Preferences();
 
 
     }
@@ -75,7 +77,7 @@ public class SignInFragment extends Fragment {
             }
         });
         try {
-            String email = authenticationRepository.getDefaults("email", getContext());
+            String email = myPreferences.getDefaults("email", getContext());
             if(email != null && email != ""){
                 emailEdit.setText(email);
             }

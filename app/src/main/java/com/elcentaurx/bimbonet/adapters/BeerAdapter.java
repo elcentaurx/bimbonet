@@ -12,15 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.elcentaurx.bimbonet.R;
-import com.elcentaurx.bimbonet.model.Beer;
-import com.elcentaurx.bimbonet.repository.response.BeerResponse;
+import com.elcentaurx.bimbonet.data.database.entity.Item;
+import com.elcentaurx.bimbonet.model.BeerResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.ViewHolder> {
 
     private final Context context;
     ArrayList<BeerResponse> beerArrayList;
+    List<Item> itemList;
 
     public BeerAdapter(Context context, ArrayList<BeerResponse> beerArrayList){
         this.context = context;

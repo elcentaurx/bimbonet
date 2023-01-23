@@ -1,4 +1,4 @@
-package com.elcentaurx.bimbonet.retrofit;
+package com.elcentaurx.bimbonet.data.remote;
 
 import static com.elcentaurx.bimbonet.constant.AppConstant.BASE_URL;
 import retrofit2.converter.gson.GsonConverterFactory;

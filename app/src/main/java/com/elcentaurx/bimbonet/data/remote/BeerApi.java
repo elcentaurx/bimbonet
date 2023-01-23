@@ -1,7 +1,6 @@
-package com.elcentaurx.bimbonet.retrofit;
+package com.elcentaurx.bimbonet.data.remote;
 
-import com.elcentaurx.bimbonet.model.Beer;
-import com.elcentaurx.bimbonet.repository.response.BeerResponse;
+import com.elcentaurx.bimbonet.model.BeerResponse;
 
 import java.util.List;
 
@@ -14,8 +13,6 @@ public interface BeerApi {
 
     @GET("v2/beers")
     Call<List<BeerResponse>> getBeers(@Query("page") Integer page);
-//    @GET("v2/beers?page=1")
-//    Call<BeerResponse> getBeers();
     
     @GET("v2/beers/{id}")
     Call<BeerResponse> getBeer(@Path("id") Long id);

@@ -20,9 +20,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.elcentaurx.bimbonet.R;
+import com.elcentaurx.bimbonet.data.database.entity.Item;
 import com.elcentaurx.bimbonet.repository.AuthenticationRepository;
 import com.elcentaurx.bimbonet.viewmodel.AuthViewModel;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 
 public class ProfileFragment extends Fragment {
@@ -77,6 +80,10 @@ public class ProfileFragment extends Fragment {
                 navController.navigate(R.id.action_profileFragment_to_beerListFragment);
             }
         });
+
+
+
+
 
 
 

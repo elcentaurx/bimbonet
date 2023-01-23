@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.elcentaurx.bimbonet.repository.BeerRepository;
-import com.elcentaurx.bimbonet.repository.response.BeerResponse;
+import com.elcentaurx.bimbonet.model.BeerResponse;
 
 import java.util.List;
 
