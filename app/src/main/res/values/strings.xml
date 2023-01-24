@@ -5,6 +5,7 @@
     <string name="signInText">Sign In</string>
     <string name="signUpText">Sign Up</string>
     <string name="SignOutText">Sign Out</string>
+    <string name="beerList">Beer List</string>
     <string name="enterEmail">Enter your email</string>
     <string name="enterPassword">Enter your password</string>
     <string name="isRegistered">Not Registered Yet ? Sign Up</string>

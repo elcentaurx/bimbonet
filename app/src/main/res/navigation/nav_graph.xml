@@ -14,35 +14,34 @@
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
         <action
-            android:id="@+id/action_signUpFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_signUpFragment_to_beerListFragment2"
+            app:destination="@id/beerListFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.elcentaurx.bimbonet.views.SignInFragment"
         android:label="SignInFragment" >
         <action
-            android:id="@+id/action_signInFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.elcentaurx.bimbonet.views.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_profileFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-        <action
-            android:id="@+id/action_profileFragment_to_beerListFragment"
+            android:id="@+id/action_signInFragment_to_beerListFragment"
             app:destination="@id/beerListFragment" />
     </fragment>
     <fragment
         android:id="@+id/beerListFragment"
         android:name="com.elcentaurx.bimbonet.views.BeerListFragment"
         android:label="fragment_beer_list"
-        tools:layout="@layout/fragment_beer_list" />
+        tools:layout="@layout/fragment_beer_list" >
+        <action
+            android:id="@+id/action_beerListFragment_to_beerDetailFragment"
+            app:destination="@id/beerDetailFragment" />
+        <action
+            android:id="@+id/action_beerListFragment_to_signUpFragment2"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/beerDetailFragment"
+        android:name="com.elcentaurx.bimbonet.views.BeerDetailFragment"
+        android:label="BeerDetailFragment" />
 </navigation>

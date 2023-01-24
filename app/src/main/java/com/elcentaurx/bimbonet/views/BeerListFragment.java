@@ -4,8 +4,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,39 +30,67 @@ import com.elcentaurx.bimbonet.data.database.repository.ItemRepository;
 import com.elcentaurx.bimbonet.data.database.repository.ItemRepositoryImpl;
 import com.elcentaurx.bimbonet.data.preferences.Preferences;
 import com.elcentaurx.bimbonet.model.BeerResponse;
+import com.elcentaurx.bimbonet.repository.AuthenticationRepository;
+import com.elcentaurx.bimbonet.viewmodel.AuthViewModel;
 import com.elcentaurx.bimbonet.viewmodel.BeerViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class BeerListFragment extends Fragment {
+public class BeerListFragment extends Fragment implements BeerAdapter.RecyclerItemClick {
 
     private static final String TAG = BeerListFragment.class.getSimpleName();
-
+    private AuthViewModel viewModel;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private Button showDB;
-    Preferences preferences;
-
     private LinearLayoutManager layoutManager;
     private ArrayList<BeerResponse> beerArrayList = new ArrayList<>();
-    BeerViewModel beerViewModel;
     private BeerAdapter adapter;
+    private BeerDetailFragment beerDetailFragment;
+    private NavController navController;
+    Preferences preferences;
+    Bundle bundle;
+    BeerViewModel beerViewModel;
     AppDataBase dataBase;
     ItemDao itemDao;
     ItemRepository repo;
     List<Item> items;
     String isDBInitialize;
     BeerResponse beerResponse;
+    AuthenticationRepository repository;
+    Button signOut;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(R.string.beerList);
         dataBase = AppDataBase.getInstance(this.getContext());
         itemDao = dataBase.itemDao();
         repo = new ItemRepositoryImpl(itemDao);
         preferences = new Preferences();
+        bundle = new Bundle();
+        beerDetailFragment = new BeerDetailFragment();
+
+        viewModel = new ViewModelProvider(this , (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getActivity().getApplication())).get(AuthViewModel.class);
+        viewModel.getLoggedStatus().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){
+
+                    navController.navigate(R.id.action_beerListFragment_to_signUpFragment2);
+//                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
+        repository = new AuthenticationRepository(getActivity().getApplication());
+
 
     }
 
@@ -73,21 +106,20 @@ public class BeerListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showDB = view.findViewById(R.id.showDb);
+        navController = Navigation.findNavController(view);
         progressBar = view.findViewById(R.id.progress_bar);
         recyclerView = view.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        adapter = new BeerAdapter(getContext(), beerArrayList);
+        adapter = new BeerAdapter(getContext(), beerArrayList, this);
+        signOut = view.findViewById(R.id.signOut);
+
+
+
         recyclerView.setAdapter(adapter);
         beerViewModel = ViewModelProviders.of(this).get(BeerViewModel.class);
-        showDB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDBConsole();
-            }
-        });
+
         isDBInitialize = preferences.getDefaults("isDbinitialized",getContext());
         if(isDBInitialize == "N"){
             getBeers();
@@ -95,6 +127,12 @@ public class BeerListFragment extends Fragment {
         else {
             setDbtoAdapter();
         }
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.signOut();
+            }
+        });
     }
 
     private void getBeers() {
@@ -129,13 +167,6 @@ public class BeerListFragment extends Fragment {
         }
     }
 
-    public void showDBConsole(){
-        items  =  itemDao.getAll();
-        for (Item item: items) {
-            Log.d("ItemRoomDB", "item " + item.getDescription());
-        }
-    }
-
     public void setDbtoAdapter(){
         items  =  itemDao.getAll();
         for (Item item: items) {
@@ -150,4 +181,15 @@ public class BeerListFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
 
     }
+
+    @Override
+    public void itemClick(BeerResponse beerResponse) {
+        bundle.putSerializable("beerSelected", beerResponse);
+        beerDetailFragment.setArguments(bundle);
+        navController.navigate(R.id.action_beerListFragment_to_beerDetailFragment,bundle);
+
+
+        Log.d("CLICKKK---->", beerResponse.getDescription());
+    }
+
 }

@@ -18,17 +18,21 @@ import com.elcentaurx.bimbonet.model.BeerResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.ViewHolder> {
+public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.ViewHolder>  {
 
     private final Context context;
     ArrayList<BeerResponse> beerArrayList;
-    List<Item> itemList;
+    private RecyclerItemClick itemClick;
 
-    public BeerAdapter(Context context, ArrayList<BeerResponse> beerArrayList){
+
+
+    public BeerAdapter(Context context, ArrayList<BeerResponse> beerArrayList, RecyclerItemClick itemClick){
         this.context = context;
         this.beerArrayList = beerArrayList;
+        this.itemClick = itemClick;
 
     }
+
 
     @NonNull
     @Override
@@ -47,12 +51,22 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.ViewHolder> {
         Glide.with(context)
                 .load(beer.getImage_url())
                 .into(holder.imageView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClick.itemClick(beer);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return beerArrayList.size();
     }
+
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
@@ -64,5 +78,9 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.ViewHolder> {
             imageView = itemView.findViewById(R.id.imageViewCover);
             tvTitle = itemView.findViewById(R.id.tvTitle);
         }
+    }
+
+    public interface RecyclerItemClick {
+        void itemClick(BeerResponse beerResponse);
     }
 }

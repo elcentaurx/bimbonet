@@ -6,7 +6,9 @@ import com.elcentaurx.bimbonet.model.Beer;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BeerResponse {
+import java.io.Serializable;
+
+public class BeerResponse implements Serializable {
     @SerializedName("image_url")
     @Expose
     private String image_url;

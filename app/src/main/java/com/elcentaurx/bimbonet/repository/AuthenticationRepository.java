@@ -22,7 +22,6 @@ public class AuthenticationRepository {
     private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
     private MutableLiveData<Boolean> userLoggedMutableLiveData;
     private FirebaseAuth auth;
-    SharedPreferences preferences;
     Preferences myPreference;
 
     public MutableLiveData<FirebaseUser> getFirebaseUserMutableLiveData() {
@@ -49,13 +48,9 @@ public class AuthenticationRepository {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    myPreference = new Preferences();
                     firebaseUserMutableLiveData.postValue(auth.getCurrentUser());
-                    preferences = application
-                            .getSharedPreferences("email", Context.MODE_PRIVATE);
-                    String email = auth.getCurrentUser().getEmail();
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("email", email);
-                    editor.commit();
+                    myPreference.setDefaults("email", auth.getCurrentUser().getEmail(), application.getApplicationContext());
 
                 }
                 else{

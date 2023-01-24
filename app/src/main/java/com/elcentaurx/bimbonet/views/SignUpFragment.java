@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -34,13 +35,14 @@ public class SignUpFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(R.string.signUpText);
         viewModel = new ViewModelProvider(this , (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthViewModel.class);
         viewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
                 if (firebaseUser != null){
-                    navController.navigate(R.id.action_signUpFragment_to_profileFragment);
+                    navController.navigate(R.id.action_signUpFragment_to_beerListFragment2);
                 }
             }
         });
@@ -60,6 +62,7 @@ public class SignUpFragment extends Fragment {
         passEdit = view.findViewById(R.id.passEditSignUn);
         signUpButton = view.findViewById(R.id.signUpBtn);
         navController = Navigation.findNavController(view);
+
 
         signUpText = view.findViewById(R.id.signUpText);
         signUpText.setOnClickListener(new View.OnClickListener() {

@@ -15,6 +15,19 @@
 
         />
 
+    <Button
+        android:id="@+id/signOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/SignOutText"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_alignStart="@id/progress_bar"
+        android:gravity="center" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -22,15 +35,12 @@
 
         >
 
+
+
+
     </androidx.recyclerview.widget.RecyclerView>
 
-    <Button
-        android:id="@+id/showDb"
-        android:text="Show database"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </Button>
 
 
 

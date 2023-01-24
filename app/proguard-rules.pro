@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class com.elcentaurx.bimbonet.constant.**{ *; }
+-keep class com.elcentaurx.bimbonet.data.**{ *; }
+-keep class com.elcentaurx.bimbonet.model.**{ *; }
