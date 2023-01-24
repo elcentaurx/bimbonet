@@ -35,7 +35,6 @@ public class SignUpFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(R.string.signUpText);
         viewModel = new ViewModelProvider(this , (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthViewModel.class);
         viewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
@@ -57,6 +56,8 @@ public class SignUpFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(R.string.signUpText);
+
         super.onViewCreated(view, savedInstanceState);
         emailEdit = view.findViewById(R.id.emailEditSignUn);
         passEdit = view.findViewById(R.id.passEditSignUn);

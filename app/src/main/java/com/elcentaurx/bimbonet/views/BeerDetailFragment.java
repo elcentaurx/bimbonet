@@ -42,7 +42,7 @@ public class BeerDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         beerResponse = (BeerResponse) getArguments().getSerializable("beerSelected");
         Log.d("HERE===========>", beerResponse.getDescription());
-        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(beerResponse.getName());
+
 
         return inflater.inflate(R.layout.fragment_beer_detail, container, false);
     }
@@ -54,11 +54,13 @@ public class BeerDetailFragment extends Fragment {
         title = view.findViewById(R.id.tvTitleDetail);
         imageView = view.findViewById(R.id.imageViewCoverDetail);
 
+
         description.setText(beerResponse.getDescription());
         title.setText(beerResponse.getName());
         Glide.with(getContext())
                 .load(beerResponse.getImage_url())
                 .into(imageView);
+        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(beerResponse.getName());
 
 
 

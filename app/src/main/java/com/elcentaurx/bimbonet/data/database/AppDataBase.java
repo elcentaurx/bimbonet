@@ -9,9 +9,7 @@ import androidx.room.RoomDatabase;
 import com.elcentaurx.bimbonet.data.database.dao.ItemDao;
 import com.elcentaurx.bimbonet.data.database.entity.Item;
 
-@Database(entities = {
-        Item.class
-}, version = 1)
+@Database(entities = {Item.class}, version = 1)
 public abstract class AppDataBase extends RoomDatabase {
 
     public static AppDataBase INSTANCE;

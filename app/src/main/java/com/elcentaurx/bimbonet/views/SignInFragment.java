@@ -39,7 +39,7 @@ public class SignInFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(R.string.signInText);
+
         viewModel = new ViewModelProvider(this , (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthViewModel.class);
         authenticationRepository = new AuthenticationRepository(getActivity().getApplication());
@@ -66,7 +66,7 @@ public class SignInFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(R.string.signInText);
         emailEdit = view.findViewById(R.id.emailEditSignIn);
         passEdit = view.findViewById(R.id.passEditSignIn);
         signUpText = view.findViewById(R.id.signUpText);

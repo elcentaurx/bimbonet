@@ -69,7 +69,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.RecyclerIt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(R.string.beerList);
+
         dataBase = AppDataBase.getInstance(this.getContext());
         itemDao = dataBase.itemDao();
         repo = new ItemRepositoryImpl(itemDao);
@@ -114,6 +114,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.RecyclerIt
         recyclerView.setHasFixedSize(true);
         adapter = new BeerAdapter(getContext(), beerArrayList, this);
         signOut = view.findViewById(R.id.signOut);
+        ((AppCompatActivity) getContext()).getSupportActionBar().setTitle(R.string.beerList);
 
 
 
